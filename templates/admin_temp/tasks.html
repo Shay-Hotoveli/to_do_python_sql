@@ -37,6 +37,7 @@
                     <th>Creation Time</th>
                     <th>Finish Time</th>
                     <th>Completed</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +50,12 @@
                     <td>{{ task['creation_time'] }}</td>
                     <td>{{ task['finish_time'] or 'N/A' }}</td>
                     <td>{{ 'Yes' if task['complete'] else 'No' }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.delete_task', task_id=task['task_id']) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <a href="{{ url_for('admin.edit_task', task_id=task['task_id']) }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
