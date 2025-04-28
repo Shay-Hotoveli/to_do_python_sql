@@ -1,0 +1,35 @@
+name: Trivy Scan
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  trivy-scan:
+    name: Run Trivy Vulnerability Scanner
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.50.0_Linux-64bit.deb
+
+    - name: Run Trivy and Save JSON Report
+      run: |
+        trivy fs . --format json --output trivy-report.json --severity HIGH,CRITICAL --exit-code 1
+
+    - name: Upload Trivy JSON Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: trivy-report
+        path: trivy-report.json
+
+
