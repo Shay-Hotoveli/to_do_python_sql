@@ -50,6 +50,9 @@
                 <div>
                     <strong>{{ task['task_header'] }}</strong>: {{ task['task_description'] }} 
                     <small class="text-muted">(Created: {{ task['creation_time'] }})</small>
+                    {% if task['finish_time'] %}
+                        <br><small class="text-success">Finished: {{ task['finish_time'] }}</small>
+                    {% endif %}
                 </div>
                 <div>
                     <form action="{{ url_for('user.delete_task', task_id=task['task_id']) }}" method="POST" class="d-inline">
